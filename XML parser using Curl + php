@@ -1,0 +1,43 @@
+ 
+ 
+ 
+ public function SaveSignupApiData($registerApiData = null) {
+        $MainUrl = 'http://98.189.27.77/service.asmx';
+        $PostData = '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+                <soap:Body>
+                  <Register xmlns="http://tempuri.org/">
+                    <objMobile>
+                      <PhoneNumber>' . $registerApiData['phoneNo'] . '</PhoneNumber>
+                      <FirstName>' . $registerApiData['firstName'] . '</FirstName>
+                      <LastName>' . $registerApiData['lastName'] . '</LastName>
+                      <Email>' . $registerApiData['email'] . '</Email>
+                      <DOB>' . $registerApiData['dob'] . '</DOB>
+                      <Password> </Password>
+                    </objMobile>
+                  </Register>
+                </soap:Body>
+              </soap:Envelope>';
+
+        $headers = array(
+            'Content-type: text/xml; charset= utf-8', 'Accept: text/xml', 'Cache-Control: no-cache',
+            'Pragma: no-cache',
+            'SOAPAction:http://tempuri.org/Register',
+            'Content-length: ' . strlen($PostData),
+        );
+        $curl_handle = curl_init();
+        curl_setopt($curl_handle, CURLOPT_URL, $MainUrl);
+        curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl_handle, CURLOPT_POST, true);
+        curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $PostData);
+        curl_setopt($curl_handle, CURLOPT_HTTPHEADER, $headers);
+        $returned_data = curl_exec($curl_handle);
+        return true;
+//$ourarray = json_decode(json_encode((array) simplexml_load_string($returned_data)),1);
+//        $xml = preg_replace('/(<\/?)(\w+):([^>]*>)/', '$1$2$3', $returned_data);
+//        $xml = simplexml_load_string($xml);
+//        $json = json_encode($xml);
+//        $responseArray = json_decode($json, true);
+//        echo "<pre>";
+//        var_dump($responseArray);
+//        exit;
+    }
